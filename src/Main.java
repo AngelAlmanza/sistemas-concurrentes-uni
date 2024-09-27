@@ -1,11 +1,11 @@
-import bar.Borracho;
+import banco.Cliente;
 
 public class Main {
     public static void main(String[] args) {
-        Thread borracho1 = new Thread(new Borracho("Angel"));
-        Thread borracho2 = new Thread(new Borracho("Daniel"));
+        Thread cliente1 = new Thread(new Cliente("Angel", 20.0f));
+        Thread cliente2 = new Thread(new Cliente("Daniel", 40.0f));
 
-        borracho1.start();
-        borracho2.start();
+        cliente1.start();
+        cliente2.start();
     }
 }
