@@ -1,4 +1,4 @@
-package bar;
+package dekker;
 
 public enum ExampleType {
     BAR,

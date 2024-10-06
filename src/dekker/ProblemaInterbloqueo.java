@@ -1,18 +1,18 @@
 package dekker;
 
-public class AlternanciaEstricta implements Runnable {
+public class ProblemaInterbloqueo implements Runnable {
     private int numero;
     private int other;
     private ExampleType type;
     private float dineroPorRetirar;
 
-    public AlternanciaEstricta(int numero, int other, ExampleType type) {
+    public ProblemaInterbloqueo(int numero, int other, ExampleType type) {
         this.numero = numero;
         this.other = other;
         this.type = type;
     }
 
-    public AlternanciaEstricta(int numero, int other, ExampleType type, float dineroPorRetirar) {
+    public ProblemaInterbloqueo(int numero, int other, ExampleType type, float dineroPorRetirar) {
         this.numero = numero;
         this.other = other;
         this.type = type;
@@ -28,9 +28,10 @@ public class AlternanciaEstricta implements Runnable {
         }
     }
 
-    public void barExample () {
+    private void barExample() {
         while (true) {
-            while (Bath.turno != this.numero) {}
+            while(Pizarra.flags[other]) {}
+            Pizarra.flags[numero] = true;
 
             synchronized (this) {
                 try {
@@ -39,25 +40,26 @@ public class AlternanciaEstricta implements Runnable {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-                System.out.println("El borracho N°" + this.numero + " salio del baño");
-                Bath.turno = other;
             }
+
+            System.out.println("El borracho N°" + this.numero + " salio del baño");
+            Pizarra.flags[numero] = false;
         }
     }
 
-    public void bankExample () {
-        while (true) {
-            while (Bank.turno != this.numero) {}
+    private void bankExample() {
+        while(true) {
+            while(Pizarra.flags[other]) {}
+            Pizarra.flags[numero] = true;
 
             synchronized (this) {
-                System.out.println("Dinero disponible: $" + Bank.saldo);
                 try {
+                    System.out.println("Dinero disponible $" + Bank.saldo);
                     if (Bank.saldo >= dineroPorRetirar) {
                         Bank.saldo -= dineroPorRetirar;
-                        System.out.println("El client N°" + this.numero + " ha retirado $" + dineroPorRetirar);
+                        System.out.println("El cliente N°" + this.numero + " ha retirado $" + dineroPorRetirar);
                     } else {
-                        System.out.println("No ha suficientes fondos");
+                        System.out.println("No hay suficientes fondos");
                     }
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -65,7 +67,7 @@ public class AlternanciaEstricta implements Runnable {
                 }
 
                 System.out.println("Cuenta disponible");
-                Bank.turno = other;
+                Pizarra.flags[numero] = false;
             }
         }
     }

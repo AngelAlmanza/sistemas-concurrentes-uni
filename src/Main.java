@@ -1,27 +1,53 @@
-import investigacionlamport.ThreadProcess;
+import dekker.*;
 
 public class Main {
     public static void main(String[] args) {
-        Thread thread1 = new Thread(new ThreadProcess(1, 10));
-        Thread thread2 = new Thread(new ThreadProcess(2, 5));
-        Thread thread3 = new Thread(new ThreadProcess(3, 10));
-        Thread thread4 = new Thread(new ThreadProcess(4, 15));
-        Thread thread5 = new Thread(new ThreadProcess(5, 5));
+        // BAR EXAMPLES
 
-        thread1.start();
-        thread2.start();
-        thread3.start();
-        thread4.start();
-        thread5.start();
+        /*
+        Thread borracho1 = new Thread(new AlternanciaEstricta(1, 2, ExampleType.BAR));
+        Thread borracho2 = new Thread(new AlternanciaEstricta(2, 1, ExampleType.BAR));
+         */
 
-        try {
-            thread1.join();
-            thread2.join();
-            thread3.join();
-            thread4.join();
-            thread5.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        /*
+        Thread borracho1 = new Thread(new ProblemaInterbloqueo(0, 1, ExampleType.BAR));
+        Thread borracho2 = new Thread(new ProblemaInterbloqueo(1, 0, ExampleType.BAR));
+         */
+
+        /*
+        Thread borracho1 = new Thread(new ColisionRegionCritica(0, 1, ExampleType.BAR));
+        Thread borracho2 = new Thread(new ColisionRegionCritica(1, 0, ExampleType.BAR));
+         */
+
+        /*
+        Thread borracho1 = new Thread(new PostergacionIndefinida(0, 1, ExampleType.BAR));
+        Thread borracho2 = new Thread(new PostergacionIndefinida(1, 0, ExampleType.BAR));
+
+        borracho1.start();
+        borracho2.start();
+         */
+
+        // BANK EXAMPLES
+
+        /*
+        Thread cliente1 = new Thread(new AlternanciaEstricta(1, 2, ExampleType.BANK, 20.0f));
+        Thread cliente2 = new Thread(new AlternanciaEstricta(2, 1, ExampleType.BANK, 40.0f));
+         */
+
+        /*
+        Thread cliente1 = new Thread(new ProblemaInterbloqueo(0, 1, ExampleType.BANK, 20.0f));
+        Thread cliente2 = new Thread(new ProblemaInterbloqueo(1, 0, ExampleType.BANK, 40.0f));
+         */
+
+        /*
+        Thread cliente1 = new Thread(new ColisionRegionCritica(0, 1, ExampleType.BANK, 20.0f));
+        Thread cliente2 = new Thread(new ColisionRegionCritica(1, 0, ExampleType.BANK, 40.0f));
+         */
+
+        Thread cliente1 = new Thread(new PostergacionIndefinida(0, 1, ExampleType.BANK, 20.0f));
+        Thread cliente2 = new Thread(new PostergacionIndefinida(1, 0,ExampleType.BANK, 40.0f));
+
+        cliente1.start();
+        cliente2.start();
     }
 }
