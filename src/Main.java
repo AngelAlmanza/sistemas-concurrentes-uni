@@ -5,9 +5,9 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
         // Crear procesos (borrachos)
-        Process p1 = new Process(1);
-        Process p2 = new Process(2);
-        Process p3 = new Process(3);
+        Process p1 = new Process(1, 20.0f);
+        Process p2 = new Process(2, 60.0f);
+        Process p3 = new Process(3, 70.0f);
 
         // Añadir todos los procesos a cada proceso
         p1.setProcesses(Arrays.asList(p1, p2, p3));

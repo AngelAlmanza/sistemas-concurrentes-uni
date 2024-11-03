@@ -7,14 +7,16 @@ public class Process {
     private int processId;
     private int timestamp;
     private int okCount;
+    private float quantity;
     private boolean requestingCriticalSection;
     private List<Message> messageQueue;
     private List<Process> processes;
 
-    public Process(int processId) {
+    public Process(int processId, float quantity) {
         this.processId = processId;
         this.timestamp = 0;
         this.okCount = 0;
+        this.quantity = quantity;
         this.requestingCriticalSection = false;
         this.messageQueue = new ArrayList<>();
         this.processes = new ArrayList<>();
@@ -66,16 +68,25 @@ public class Process {
     }
 
     public void enterCriticalSection() {
-        System.out.println("Borracho N° " + processId + " entra al baño.");
+        System.out.println("Cliente N° " + processId + " accede a la cuenta bancaria.");
+        System.out.println("Saldo disponible al entrar de la cuenta $" + Bank.saldo);
 
         // Simulación de la sección crítica
         try {
             Thread.sleep(1000); // Simula el tiempo en la sección crítica
+            if (Bank.saldo >= quantity) {
+                System.out.println("Cliente N° " + processId + " retira $" + quantity);
+                Bank.saldo -= quantity;
+            } else {
+                System.out.println("No hay fondos suficientes");
+            }
+
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
 
-        System.out.println("Borracho N° " + processId + " sale del baño.");
+        System.out.println("Cliente N° " + processId + " sale de la cuenta bancaria.");
+        System.out.println("Saldo disponible al salir de la cuenta $" + Bank.saldo);
         requestingCriticalSection = false;
         okCount = 0;
 
