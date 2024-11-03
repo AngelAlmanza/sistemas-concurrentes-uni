@@ -1,14 +1,22 @@
-import buffersincronizacion.*;
+import exclusionmutuaimpl.Process;
+
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
+        // Crear procesos (borrachos)
+        Process p1 = new Process(1);
+        Process p2 = new Process(2);
+        Process p3 = new Process(3);
 
-        MessageBuffer buffer = new MessageBuffer(3);
+        // Añadir todos los procesos a cada proceso
+        p1.setProcesses(Arrays.asList(p1, p2, p3));
+        p2.setProcesses(Arrays.asList(p1, p2, p3));
+        p3.setProcesses(Arrays.asList(p1, p2, p3));
 
-        Sender sender = new Sender(buffer);
-        Receiver receiver = new Receiver(buffer);
-
-        sender.start();
-        receiver.start();
+        // Simulacion de solicitudes de acceso a la seccion critica
+        new Thread(p1::requestCriticalSection).start();
+        new Thread(p2::requestCriticalSection).start();
+        new Thread(p3::requestCriticalSection).start();
     }
 }
